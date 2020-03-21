@@ -11,8 +11,8 @@ let distribution = "gaussian";
 let isolation = true;
 let infectivity = 0.2;
 let fatality = 0.05;
-let incubationPeriod = 5;
-let recoveryPeriod = 10;
+let incubationPeriod = 2;
+let recoveryPeriod = 5;
 let immunity = true;
 
 let virus;
@@ -69,7 +69,11 @@ $("#target").submit(function(event) {
 });
 
 function setup() {
-  canvas = createCanvas(windowWidth * 0.667 - 20, windowHeight - 150);
+  if (windowWidth < 750) {
+    canvas = createCanvas(windowWidth - 50, windowHeight - 150);
+  } else {
+    canvas = createCanvas(windowWidth * 0.667 - 20, windowHeight - 150);
+  }
   canvas.parent('sketch-holder');
   noStroke();
 
@@ -80,7 +84,11 @@ function setup() {
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth * 0.667 - 30, windowHeight - 150);
+  if (windowWidth < 750) {
+    resizeCanvas(windowWidth - 20, windowHeight - 150);
+  } else {
+    resizeCanvas(windowWidth * 0.667 - 20, windowHeight - 150);
+  }
 }
 
 function draw() {
