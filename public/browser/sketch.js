@@ -1,4 +1,5 @@
-const colour = ['#95a5a6', '#F39C12', '#E74C3C', '#2C3E50', '#3498DB'];
+const colour = ["#c6c9cc", "#ffc107", "#dc3545", "#343a40", "#007bff"];
+const status = ["Healthy", "Infected", "Confirmed", "Dead", "Recovered"];
 
 let canvas;
 let herd;
@@ -18,6 +19,17 @@ let immunity = true;
 let virus;
 
 let paused = true;
+let timer = 0;
+
+let x = 0;
+var plot = {
+  x: [],
+  0: [],
+  1: [],
+  2: [],
+  3: [],
+  4: []
+};
 
 $("#tutorial").modal("show");
 
@@ -30,14 +42,28 @@ $("#simulate").click(function() {
 $("#pause").click(function() {
   if (paused) {
     $("#pause").text("Pause");
+    $("#analyze").addClass("disabled");
   } else {
     $("#pause").text("Resume");
+    $("#analyze").removeClass("disabled");
   }
   paused = !paused;
 });
 
 $(".speed").click(function(event) {
-  frameRate(parseInt(event.target.id));
+  let speed = parseInt(event.target.id);
+  frameRate(speed);
+  switch (speed) {
+    case 30:
+      $("#speedText").text("Speed: Fast");
+      break;
+    case 15:
+      $("#speedText").text("Speed: Average");
+      break;
+    case 5:
+      $("#speedText").text("Speed: Slow");
+      break;
+  }
 });
 
 $("#target").submit(function(event) {
@@ -63,9 +89,13 @@ $("#target").submit(function(event) {
   paused = true;
 
   $("#simulate").removeClass("disabled");
+  $("#analyze").addClass("disabled");
 
   count = [population, 0, 0, 0, 0];
   updateProgress(count);
+
+  x = 0;
+  plot = {x: [], 0: [], 1: [], 2: [], 3: [], 4: []};
 });
 
 function setup() {
@@ -81,6 +111,8 @@ function setup() {
 
   herd = new Herd(population, socialDistancing, distribution, isolation, width, height);
   virus = new Virus(infectivity, fatality, incubationPeriod, recoveryPeriod, immunity);
+
+  frameRate(30);
 }
 
 function windowResized() {
@@ -109,6 +141,13 @@ function draw() {
     }
 
     updateProgress(count);
+
+    if (timer > 30) {
+      updatePlot(count);
+      timer = 0;
+    } else {
+      timer++;
+    }
 
     for (let human of herd.array){
       if (human.status == 1 || (human.status == 2 && !human.isolation)) {
@@ -144,6 +183,15 @@ function updateProgress(count) {
   let total = count[0] + count[1] + count[2] + count[3] + count[4];
   for (let i = 0; i < 5; i++) {
     $(`#${i}.progress-bar`).css("width", `${Math.ceil(count[i] / total * 100)}%`);
-    $(`#${i}.count`).text(`${count[i]}`);
+    $(`#${i}.count`).text(`${status[i]}: ${count[i]}`);
   }
+}
+
+function updatePlot(count) {
+  plot.x.push(x);
+  for (let i = 0; i < 5; i++) {
+    plot[i].push(count[i]);
+  }
+  x++;
+  console.log(plot);
 }

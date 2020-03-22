@@ -20,7 +20,7 @@ class Human {
     this.speed = Math.round(randomGaussian(0, 3.4 - socialDistancing));
     this.status = 0;
     this.isolation = isolation;
-    this.time = 0;
+    this.timer = 0;
     this.virus = null;
   }
 
@@ -46,20 +46,20 @@ class Human {
 
   update() {
     if (this.status == 1) {
-      this.time++;
-      if (this.time > this.virus.incubationPeriod * 30) {
+      this.timer++;
+      if (this.timer > this.virus.incubationPeriod * 30) {
         this.status = 2;
-        this.time = 0;
+        this.timer = 0;
       }
     } else if (this.status == 2) {
-      this.time++;
-      if (this.time > this.virus.recoveryPeriod * 30) {
+      this.timer++;
+      if (this.timer > this.virus.recoveryPeriod * 30) {
         if (random(1) < this.virus.fatality) {
           this.status = 3;
         } else {
           this.status = 4;
         }    
-        this.time = 0;
+        this.timer = 0;
       }
     }
   }
