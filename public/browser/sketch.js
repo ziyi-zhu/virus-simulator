@@ -101,6 +101,8 @@ $("#target").submit(function(event) {
 function setup() {
   if (windowWidth < 750) {
     canvas = createCanvas(windowWidth - 50, windowHeight - 150);
+    population = 1000;
+    $("#inputSize").val("1000");
   } else {
     canvas = createCanvas(windowWidth * 0.667 - 20, windowHeight - 150);
   }
@@ -193,5 +195,4 @@ function updatePlot(count) {
     plot[i].push(count[i]);
   }
   x++;
-  console.log(plot);
 }

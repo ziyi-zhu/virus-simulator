@@ -1,8 +1,6 @@
 let plt = document.getElementById("plot");
 
 $("#analyze").click(function() {
-  $("#analysis").modal("show");
-
   var trace1 = {
     x: plot.x,
     y: plot[1],
@@ -59,7 +57,13 @@ $("#analyze").click(function() {
     }
   };
 
-  var data = [trace1, trace2, trace3, trace4];
+  if (windowWidth < 750) {
+    $("#plot").css("width", "320px");
+    layout["showlegend"] = false;
+  }
 
+  var data = [trace1, trace2, trace3, trace4];
   Plotly.newPlot(plt, data, layout);
+
+  $("#analysis").modal("show");
 });
