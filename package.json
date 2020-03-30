@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/ziyi-zhu/virus-simulator.git"
   },
-  "author": "",
+  "author": "Ziyi Zhu",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ziyi-zhu/virus-simulator/issues"
